@@ -84,10 +84,29 @@ class HomeScreen extends React.Component {
                 title : 'Business Analyst',
                 avatarImage : require('../../assets/images/men/7.jpg')
             }
-      ]
+      ],
+      filteredData : []
     }
   }
 
+  _filterList = (text) => {
+
+      let filteredData = [];
+      this.state.users.map((userData,uIndex) => {
+
+            if(userData.userName.includes(text))
+            {
+              filteredData.push(userData);
+            }
+
+      })
+      
+      this.setState({filteredData});
+
+  }
+  componentDidMount(){
+    this.setState({filteredData:this.state.users});
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -105,14 +124,15 @@ class HomeScreen extends React.Component {
                     placeholderTextColor={'#cbcbcf'}
                     placeholder = "Search Users" 
                     style={{width:"90%",alignSelf:'flex-end',color:colors.black}}
+                    onChangeText={(text) => this._filterList(text)}
                 />  
                 <AntDesign name="closecircle" size={25} color={colors.grey} style={{position:'absolute',right:10,top:8}}/>
               </View>              
           </View>
           <ScrollView style={styles.resultContainer} showsVerticalScrollIndicator={false}>
 
-            {this.state.users.length > 0 && 
-                this.state.users.map((sD,sI) => {
+            {this.state.filteredData.length > 0 && 
+                this.state.filteredData.map((sD,sI) => {
                   return(
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Pulse',{ userData : sD })} activeOpacity={1}>
                         <View style={styles.userCard} key={'user_list'+sI}>
@@ -140,17 +160,17 @@ class HomeScreen extends React.Component {
                   )
                 })
             }
-            {this.state.users.length == 0 && 
-              <View style={{flex:1,justifyContent:'center'}}>
+            {this.state.filteredData.length == 0 && 
+              <View style={{flex:1,alignItems:'center'}}>
                   <LottieView 
                         source={require('../../assets/animations/10687-not-found.json')} 
                         autoPlay 
                         loop
                         style={{
-                            height:'75%',
+                            height:'100%',
                             width:'100%',
                         }} />
-                  <CustomText style={{fontSize:15,alignSelf:'center',position:'absolute',top:'60%'}}>
+                  <CustomText style={{fontSize:15,alignSelf:'center',position:'absolute',top:'80%'}}>
                         No users found matching the given search criteria
                   </CustomText>
               </View>

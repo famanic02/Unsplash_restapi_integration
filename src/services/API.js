@@ -7,7 +7,7 @@ import { Config } from '../config/index';
 import Unsplash, { toJson } from 'unsplash-js/native';
 
 const unsplash = new Unsplash({
-  applicationId: Config.unsplashApplicationId,
+  accessKey: Config.unsplashApplicationId,
   secret: Config.unsplashSecret,
 });
 

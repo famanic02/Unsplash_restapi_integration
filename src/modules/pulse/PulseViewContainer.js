@@ -66,6 +66,7 @@ class PulseScreen extends React.Component {
     unsplashService.listPhotos(page, BATCH_SIZE)
       .then(unsplashService.toJson)
       .then((data) => {
+        console.log(data);
         if(data.errors)
         {
           data = tempData;
@@ -87,28 +88,6 @@ class PulseScreen extends React.Component {
     this.setState({imagePreview:!this.state.imagePreview,photo});
   }
 
-  _findTendingStories = (content) => {
-    
-    var data = {
-      string : 'stories/search?term='+content
-    };
-
-    this.setState({activeTopic:content},() => {
-
-        var req = request({ method: 'GET',data });
-        req.then(results => {
-    
-          if(results.data.length > 0)
-          {
-            this.setState({stories : results.data});
-          }
-          else
-          {
-            this.setState({stories : []});
-          }
-        })
-    })
-  }
 
   handleLoadMore = () => {
     const { page } = this.state;
